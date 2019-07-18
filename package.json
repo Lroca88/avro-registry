@@ -2,7 +2,7 @@
   "name": "avro-registry",
   "version": "1.0.0",
   "description": "Confluent Schema Registry implementation to easily serialize and deserialize kafka messages with only one peer depencency.",
-  "main": "schemaRegistry.js",
+  "main": "schema-registry.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -21,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/Lroca88/avro-registry/issues"
   },
-  "homepage": "https://github.com/Lroca88/avro-registry#readme"
+  "homepage": "https://github.com/Lroca88/avro-registry#readme",
+  "dependencies": {
+    "avsc": "^5.4.12"
+  }
 }
