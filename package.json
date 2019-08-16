@@ -1,8 +1,8 @@
 {
-  "name": "avro-registry",
+  "name": "schema-registry-serdes",
   "version": "1.0.0",
-  "description": "Confluent Schema Registry implementation to easily serialize and deserialize kafka messages with only one peer depencency.",
-  "main": "schema-registry.js",
+  "description": "Confluent Schema Registry integration to easily serialize and deserialize messages using avro schemas.",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,10 +11,11 @@
     "url": "git+https://github.com/Lroca88/avro-registry.git"
   },
   "keywords": [
+    "schema-registry",
+    "Confluent",
     "kafka",
     "avro",
-    "confluent",
-    "schema-registry"
+    "serdes"
   ],
   "author": "Luis Roca",
   "license": "MIT",
