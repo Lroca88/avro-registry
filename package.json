@@ -1,6 +1,6 @@
 {
   "name": "schema-registry-serdes",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Confluent Schema Registry integration to easily serialize and deserialize messages using avro schemas.",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Lroca88/avro-registry.git"
+    "url": "git+https://github.com/Lroca88/schema-registry-serdes.git"
   },
   "keywords": [
     "schema-registry",
@@ -20,9 +20,9 @@
   "author": "Luis Roca",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Lroca88/avro-registry/issues"
+    "url": "https://github.com/Lroca88/schema-registry-serdes/issues"
   },
-  "homepage": "https://github.com/Lroca88/avro-registry#readme",
+  "homepage": "https://github.com/Lroca88/schema-registry-serdes#readme",
   "dependencies": {
     "avsc": "^5.4.12"
   }

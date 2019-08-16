@@ -1,5 +1,6 @@
-# Dependency directories
+# Ignore Dependency directories
 node_modules/
-
-# VSCode direcories
+# Ignore VSCode direcories
 .vscode/
+# Ignore All log files
+*.log
