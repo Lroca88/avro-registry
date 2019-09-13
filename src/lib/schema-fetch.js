@@ -21,7 +21,7 @@ const fetchSchema = (schemaRegistry, schemaId) => {
             });
             res.on('end', () => {
                 const response = JSON.parse(data);
-                if (res.statusCode !== 200) {
+                if (res.statusCode == 200) {
                     const schemaStr = JSON.parse(data).schema;
                     const schema = JSON.parse(schemaStr);
                     resolve(schema);
