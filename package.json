@@ -1,6 +1,6 @@
 {
   "name": "schema-registry-serdes",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Confluent Schema Registry integration to easily serialize and deserialize messages using avro schemas.",
   "main": "index.js",
   "scripts": {
