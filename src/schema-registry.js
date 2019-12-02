@@ -143,7 +143,7 @@ class SchemaRegistry {
 	 * Get avsc types
      * This method is for getting the types used by avsc
      * @return {object} avro types
-     */
+    */
     getTypes() {
         return avro.types;
     }
