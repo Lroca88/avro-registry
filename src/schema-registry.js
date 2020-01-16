@@ -1,5 +1,8 @@
 'use strict';
 
+/** @typedef { import('./types').EncodingValidationError } EncodingValidationError */
+/** @typedef { import('./types').SchemaRegistryOptions } SchemaRegistryOptions */
+
 const url = require('url');
 const http = require('http');
 const https = require('https');
@@ -8,42 +11,7 @@ const avro  = require('avsc');
 const SchemaCache = require('./lib/schema-cache');
 const pushSchema = require('./lib/schema-push');
 const fetchSchema = require('./lib/schema-fetch');
-
-/**
- * @typedef {object} SchemaRegistryOptions
- * @property {boolean} validateEncodedMessages Set to true get better error messages when the message being sent doesn't match
- *  the schema. **Note that this has significant impact on performance and should only be enabled for development.**
-*/
-
-/**
- * @typedef {object} EncodingValidationError
- * @property {string} path Path of the field that failed validation
- * @property {value} value Value of the field that failed to be decoded
- * @property {string} expectedType Type that the shcema expected the value to be
- *  the schema. **Note that this has significant impact on performance and should only be enabled for development.**
-*/
-
-class ValidationError extends TypeError {
-    /**
-     * @param {Array<EncodingValidationError>} validationErrors 
-     */
-    constructor(validationErrors) {
-        super('Failed to encode message with given schema')
-        this.name = 'AvroSchemaValidationError'
-        this.validationErrors = validationErrors
-    }
-
-    toJSON() {
-        return {
-          error: {
-            name: this.name,
-            message: this.message,
-            stacktrace: this.stack,
-            errors: this.validationErrors
-          }
-        }
-    }
-}
+const errors = require('./lib/schema-errors')
 
 /**
  * @param {object} message Encoded message
@@ -97,7 +65,7 @@ class SchemaRegistry {
         if (this.options.validateEncodedMessages) {
             const schemaErrors = validateEncodedMessage(message, avroType);
             if (schemaErrors.length > 0) {
-                throw new ValidationError(schemaErrors)
+                throw new errors.ValidationError(schemaErrors)
             }
         }
 
