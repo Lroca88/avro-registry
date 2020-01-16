@@ -23,7 +23,7 @@ const validateEncodedMessage = (message, schema) => {
     schema.isValid(message, {
         errorHook: (path, value, type) => {
             errors.push({
-                path,
+                path: path.join('.'),
                 value,
                 expectedType: type.toString()
             })
