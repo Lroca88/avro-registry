@@ -1,5 +1,8 @@
 'use strict';
 
+/** @typedef { import('./types').EncodingValidationError } EncodingValidationError */
+/** @typedef { import('./types').SchemaRegistryOptions } SchemaRegistryOptions */
+
 const url = require('url');
 const http = require('http');
 const https = require('https');
@@ -8,7 +11,27 @@ const avro  = require('avsc');
 const SchemaCache = require('./lib/schema-cache');
 const pushSchema = require('./lib/schema-push');
 const fetchSchema = require('./lib/schema-fetch');
+const errors = require('./lib/schema-errors')
 
+/**
+ * @param {object} message Encoded message
+ * @param {avro.Type} schema Avro schema
+ * @returns {Array<EncodingValidationError>}
+*/
+const validateEncodedMessage = (message, schema) => {
+    const errors = [];
+    schema.isValid(message, {
+        errorHook: (path, value, type) => {
+            errors.push({
+                path: path.join('.'),
+                value,
+                expectedType: type.toString()
+            })
+        }
+    })
+
+    return errors
+}
 
 /**
 * SchemaRegistry Class
@@ -38,12 +61,21 @@ class SchemaRegistry {
  	*/
     _getMessageEncoded(schema, message, options = null) {
         const avroType = avro.Type.forSchema(schema, options);              // Import avro schema
-        const encodedMessage = avroType.toBuffer(message);                  // Encode message to a buffer
+
+        if (this.options.validateEncodedMessages) {
+            const schemaErrors = validateEncodedMessage(message, avroType);
+            if (schemaErrors.length > 0) {
+                throw new errors.ValidationError(schemaErrors)
+            }
+        }
+
+        const encodedMessage = avroType.toBuffer(message)
+
         return encodedMessage;
     }
 
     /**
-	 * Dencode message from Avro to Object
+	 * Decode message from Avro to Object
 	 * @param {Buffer} message Message properly formated, check _getStandardMessage 
      * @param {object} options Options for avro library
      * @param {num} offset Offset of the payload, by default 5
@@ -140,19 +172,11 @@ class SchemaRegistry {
     }
 
     /**
-	 * Get avsc types
-     * This method is for getting the types used by avsc
-     * @return {object} avro types
-    */
-    getTypes() {
-        return avro.types;
-    }
-
-    /**
 	 * Constructor
 	 * @param {string} schemaRegistryUrl Url for schema registry rest api
+     * @param {SchemaRegistryOptions} options
  	*/
-     constructor(schemaRegistryUrl) {
+     constructor(schemaRegistryUrl, options = {}) {
         const urlSections = url.parse(schemaRegistryUrl);                   // Parsing url in sections
         this.schemaRegistry = {                                             // Building the schemaRegistry object
             protocol: urlSections.protocol == "https" ? https : http,
@@ -161,6 +185,7 @@ class SchemaRegistry {
             path: urlSections.pathname,
             cache: new SchemaCache()
         }
+        this.options = options
         if (urlSections.auth) {                                             // Setting Auth in case is needed
             this.schemaRegistry.auth = urlSections.auth;
         }
