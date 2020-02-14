@@ -1,10 +1,11 @@
 {
   "name": "schema-registry-serdes",
-  "version": "1.0.5",
-  "description": "Confluent Schema Registry integration to easily serialize and deserialize messages using avro schemas.",
+  "version": "1.1.0",
+  "description": "Confluent Schema Registry serdes that use avro schemas.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node start",
+    "test": "jest --verbose"
   },
   "repository": {
     "type": "git",
@@ -25,5 +26,10 @@
   "homepage": "https://github.com/Lroca88/schema-registry-serdes#readme",
   "dependencies": {
     "avsc": "^5.4.12"
+  },
+  "devDependencies": {
+    "jest": "^25.1.0",
+    "nock": "^11.8.2",
+    "prettier": "^1.19.1"
   }
 }
