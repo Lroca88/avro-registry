@@ -2,7 +2,7 @@
 
 const http = require("http");
 const https = require("https");
-
+const avro = require("avsc");
 const SchemaCache = require("./lib/schema-cache");
 const decode = require("./lib/decode");
 const { encodeMessageById, encodeMessageBySchema } = require("./lib/encode");
@@ -41,6 +41,7 @@ function schemaRegistry(schemaRegistryUrl, config = null) {
       message,
       options
     );
+
   const encodedKey = (topic, schema, message, options) =>
     encodeMessageBySchema(
       schemaRegistry,
@@ -50,16 +51,24 @@ function schemaRegistry(schemaRegistryUrl, config = null) {
       message,
       options
     );
+
   const encodeById = (schemaId, message, options) =>
     encodeMessageById(schemaRegistry, schemaId, message, options);
+
   const decodeMessage = (message, options) =>
     decode(schemaRegistry, message, options);
+
+  //  Get avsc types
+  const getTypes = () => {
+    return avro.types;
+  };
 
   return {
     encodeMessage,
     encodeById,
     encodedKey,
-    decodeMessage
+    decodeMessage,
+    getTypes
   };
 }
 

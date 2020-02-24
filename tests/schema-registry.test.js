@@ -2,13 +2,14 @@ const nock = require("nock");
 const schemaRegistry = require("../index");
 
 describe("Schema Registry Tests", () => {
-  test("returns an object with four functions", () => {
+  test("returns an object with five functions", () => {
     const reg = schemaRegistry("http://www.testing.com");
     expect(typeof reg === "object").toBe(true);
     expect(reg.decodeMessage).toBeInstanceOf(Function);
     expect(reg.encodeMessage).toBeInstanceOf(Function);
     expect(reg.encodeById).toBeInstanceOf(Function);
     expect(reg.encodedKey).toBeInstanceOf(Function);
+    expect(reg.getTypes).toBeInstanceOf(Function);
   });
 
   test("chooses the protocol https correctly", async () => {
